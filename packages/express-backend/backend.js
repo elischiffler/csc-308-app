@@ -85,8 +85,15 @@ app.get("/users/:id", (req, res) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
+  const userWithId = {
+    ...userToAdd,
+    id: String(Math.floor(Math.random() * 1_000_000)),
+  };
+  const createdUser = addUser(userWithId);
+
+  console.log("Added user:", createdUser);
+
+  res.status(201).json(createdUser);
 });
 
 app.delete("/users/:id", (req, res) => {
