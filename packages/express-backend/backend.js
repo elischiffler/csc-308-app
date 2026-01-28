@@ -2,15 +2,14 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import userModel from "./user";
+import userModel from "./user.js";
 
 mongoose.set("debug", true);
+const app = express();
+const port = 8000;
 
 mongoose
-  .connect("mongodb://localhost:27017/users", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect("mongodb://localhost:27017/users")
   .catch((error) => console.log(error));
 
 function getUsers(name, job) {
@@ -74,8 +73,8 @@ app.get("/users/:id", (req, res) => {
 
 // get a new user given a name and job
 app.get("/users/:name/:job", (req, res) => {
-  const name = req.params["name"];
-  const job = req.params["job"];
+  const name = findUserByName(req.params["name"]);
+  const job = findUserByJob(req.params["job"]);
   const result = users["users_list"].find(
     (user) => user["name"] === name && user["job"] === job,
   );
