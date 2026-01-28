@@ -39,7 +39,7 @@ function MyApp() {
       return promise;
     }
 
-    function postUser(person) {
+    async function postUser(person) {
       return fetch("http://localhost:8000/users", {
         method: "POST",
         headers: {
@@ -56,17 +56,17 @@ function MyApp() {
       });
     }
 
-    function deleteUser(id) {
+    async function deleteUser(_id) {
       // id is currently an index coming from Table
-      const user = characters[id];
+      const user = characters[_id];
 
       // check that our user and user.id exist
-      if (!user || user.id === undefined) {
+      if (!user || user._id === undefined) {
         return Promise.reject(new Error("Invalid user index or missing user id"));
       }
 
       // make DELETE request to backend
-      return fetch(`http://localhost:8000/users/${user.id}`, {
+      return fetch(`http://localhost:8000/users/${user._id}`, {
         method: "DELETE",
       }).then((response) => {
         if (response.status !== 204) {
@@ -76,7 +76,7 @@ function MyApp() {
         }
 
         // update frontend state after successful deletion
-        removeOneCharacter(id);
+        removeOneCharacter(_id);
       });
     }
 
